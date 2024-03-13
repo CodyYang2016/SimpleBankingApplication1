@@ -9,12 +9,6 @@ class Bank:
         self.users = []
         self.accounts = []
 
-    def getNewUserUUID(self):
-        while True:
-            uuid = ''.join(str(random.randint(0, 9)) for _ in range(6))
-            if not any(user.uuid() == uuid for user in self.users):
-                return uuid
-
     def getNewAccountUUID(self):
         while True:
             uuid = ''.join(str(random.randint(0, 9)) for _ in range(12))
@@ -80,13 +74,6 @@ class User:
         return self.accounts[acct_idx].getBalance()
 
 class Transaction:
-
-    # initiate transaction without memo
-    def __init__ (self, amount, newAccount):
-        self.amount = amount
-        self.timeStamp = datetime.now()
-        self.inAccount = newAccount
-        self.memo = ""
 
     # initiate transaction with memo
     def __init__ (self, amount, newMemo, newAccount):
