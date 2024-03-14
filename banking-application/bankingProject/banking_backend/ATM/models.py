@@ -2,27 +2,35 @@
 from django.db import models
 import hashlib
 import uuid
+import bcrypt
 
-class User(models.Model):
+
+
+class customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    uuid = models.UUIDField(unique=True)
-    pin_hash = models.BinaryField()
+    customer_id = models.UUIDField(unique=True)
+    password_hash = models.BinaryField()
 
 
-    def update_user_information(self, newFirstName, newLastName, newPin):
+    def update_customer_information(self, newFirstName, newLastName, newPin):
         self.first_name = newFirstName
         self.last_name = newLastName
-        self.pin_hash = hashlib.md5(newPin.encode()).digest()
+        self.password_hash = bcrypt.hashpw(newPin.encode(), bcrypt.gensalt())
 
     def validate_pin(self, pin):
-        prospective_pin_hash = hashlib.md5(pin.encode()).digest()
-        return prospective_pin_hash == self.pin_hash
+        return bcrypt.checkpw(pin.encode(), self.password_hash)
+    
+    class Meta:
+        db_table = 'retail_banking.customer'
+        managed = False
 
 class Account(models.Model):
     name = models.CharField(max_length=100)
-    holder = models.ForeignKey(User, on_delete=models.CASCADE)
-    uuid = models.UUIDField(default =uuid.uuid4, unique=True)
+    customer_id = models.ForeignKey(customer, on_delete=models.CASCADE)
+    account_id = models.UUIDField(default =uuid.uuid4, unique=True)
+    account_description = models.CharField(max_length = 1000)
+    account_type_id = models.ForeignKey(AccountType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
 
     def get_balance(self):
         balance = 0
@@ -35,9 +43,16 @@ class Account(models.Model):
         for transaction in self.transaction_set.all().order_by('-timestamp'):
             print (transaction.get_summary_line())
     
+    def update_account_description(self, description):
+        self.account_description = description
+
+
     def add_transaction(self, amount, memo):
         Transaction.objects.create(amount=amount, memo=memo, account = self)
 
+    class Meta:
+        db_table = 'retail_banking.account'
+        managed = False
 
 class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -50,5 +65,9 @@ class Transaction(models.Model):
             return f"{self.timestamp}: ${self.amount:.2f}: {self.memo}"
         else:
             return f"{self.timestamp}: $({-self.amount:.2f}): {self.memo}"
+    
+    class Meta:
+        db_table = 'retail_banking.transaction'
+        managed = False
 
 
