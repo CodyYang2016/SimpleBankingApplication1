@@ -3,6 +3,21 @@
 import os
 import sys
 import bcrypt
+from django.db import connections
+
+def check_database_connection():
+    try:
+        # Get the default database connection
+        connection = connections['default']
+
+        # Check if the connection is alive
+        if connection.connection is not None:
+            print("Database connection is active.")
+        else:
+            print("Database connection is not active.")
+
+    except Exception as e:
+        print("Error occurred while checking database connection:", e)
 
 def create_customer(first_name, last_name, password):
     # Import Customer model
@@ -40,6 +55,7 @@ if __name__ == '__main__':
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'banking_backend.settings')
     import django
     django.setup()
+    check_database_connection()
 
     # Run the create_customer function with hardcoded values
-    create_customer("John", "Doe", "test1234")
+    # create_customer("John", "Doe", "test1234")
