@@ -1,5 +1,5 @@
 """
-URL configuration for bankingAPI project.
+URL configuration for banking_backend project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -13,11 +13,12 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
-
+from . import views  # Import the views module
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,3 +26,4 @@ urlpatterns = [
     path('account/<uuid:account_uuid>/', views.account_detail, name='account_detail'),
     path('transaction/<int:transaction_id>/', views.transaction_detail, name='transaction_detail'),
 ]
+

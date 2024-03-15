@@ -1,24 +1,26 @@
 # views.py
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import UserCreationForm
-from .models import User, Account
+from .forms import customerCreationForm
+from .models import customer, Account
 from .models import Account, Transaction
+import bcrypt
+
 
 
 def register_user(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = customerCreationForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
+            customer = form.save(commit=False)
             pin = form.cleaned_data['pin']
-            user.pin_hash = hashlib.md5(pin.encode()).digest()
-            user.save()
-            # Optionally, you can create an account for the user here
-            # Account.objects.create(holder=user, name="Savings Account")
+            customer.password_hash = bcrypt.hashpw(pin.encode(), bcrypt.gensalt())
+            customer.save()
+            # Optionally, you can create an account for the customer here
+            # Account.objects.create(holder=customer, name="Savings Account")
             return redirect('login')  # Redirect to login page after registration
     else:
-        form = UserCreationForm()
+        form = customerCreationForm()
     return render(request, 'register.html', {'form': form})
 
 def account_detail(request, account_uuid):

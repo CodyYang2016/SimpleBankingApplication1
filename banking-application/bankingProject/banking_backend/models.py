@@ -1,4 +1,4 @@
-#ATM/models.py
+#models.py
 from django.db import models
 import hashlib
 import uuid
@@ -9,7 +9,7 @@ from django.utils import timezone
 class customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    customer_id = models.AutoField(unique=True)
+    customer_id = models.AutoField(primary_key=True)
     password_hash = models.BinaryField()
 
 
@@ -37,10 +37,10 @@ class AccountType(models.Model):
 class Account(models.Model):
     name = models.CharField(max_length=100)
     customer_id = models.ForeignKey(customer, on_delete=models.CASCADE)
-    account_id = models.AutoField(default =uuid.uuid4, unique=True)
+    account_id = models.AutoField(primary_key=True)
     account_description = models.CharField(max_length = 1000)
     account_type_id = models.ForeignKey(AccountType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
-    account_number = generate_account_number("CY", 10)
+    account_number = generate_account_number("2326", 10)
 
     def get_balance(self):
         balance = 0

@@ -1,10 +1,10 @@
 # forms.py
 from django import forms
-from .models import User
+from .models import customer
 
-class UserCreationForm(forms.ModelForm):
+class customerCreationForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = customer
         fields = ['first_name', 'last_name', 'pin']
 
     pin = forms.CharField(widget=forms.PasswordInput())

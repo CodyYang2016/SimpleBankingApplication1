@@ -16,7 +16,7 @@ django.setup()
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', ))
 sys.path.append(parent_dir)
 
-from ATM.models import customer, Account, AccountType, Transaction, TransactionType
+from banking_backend.models import customer, Account, AccountType, Transaction, TransactionType
 from django.utils import timezone
 import bcrypt
 
