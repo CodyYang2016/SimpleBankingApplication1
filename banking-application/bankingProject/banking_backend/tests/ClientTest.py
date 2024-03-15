@@ -1,3 +1,6 @@
+print("Client has entered test")
+
+
 import os
 import sys
 import django
@@ -20,6 +23,7 @@ import bcrypt
 class CustomerModelTests(TestCase):
 
     def test_create_customer(self):
+        print ("Testing Customer Creation")
         # Create a test customer
         pwd_hash = bcrypt.hashpw('test1234'.encode(), bcrypt.gensalt())
         cust = customer(first_name='John', last_name='Doe', customer_id='123e4567-e89b-12d3-a456-426614174000', password_hash=pwd_hash)
@@ -29,6 +33,8 @@ class CustomerModelTests(TestCase):
         retrieved = customer.objects.get(first_name='John', last_name='Doe')
         self.assertEqual(retrieved.first_name, 'John')
         self.assertTrue(bcrypt.checkpw('test1234'.encode(), retrieved.password_hash))
+        print ("Customer created and retrieved succesfully")
+
 
 class AccountModelTests(TestCase):
 
