@@ -63,7 +63,7 @@ CREATE TABLE retail_banking.Account (
 -- Create Transaction Table under the new schema
 CREATE TABLE retail_banking.Transaction (
     transaction_id SERIAL PRIMARY KEY,
-    transaction_type VARCHAR(20),
+    transaction_type_id INT REFERENCES retail_banking.TransactionType(transaction_type_id),
     amount DECIMAL(20, 2),
     source_account_id INT REFERENCES retail_banking.Account(account_id) ON DELETE CASCADE,
     destination_account_id INT REFERENCES retail_banking.Account(account_id) ON DELETE CASCADE,
@@ -72,6 +72,22 @@ CREATE TABLE retail_banking.Transaction (
     updated_by INT,
     create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    memo VARCHAR(100),
     FOREIGN KEY (created_by) REFERENCES retail_banking.customer(customer_id),
     FOREIGN KEY (updated_by) REFERENCES retail_banking.customer(customer_id)
 );
+
+
+-- Create TransactionType Table under the new schema
+CREATE TABLE retail_banking.TransactionType (
+    transaction_type_id SERIAL PRIMARY KEY,
+    description VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- Populate TransactionType Table with initial data
+INSERT INTO retail_banking.TransactionType (description) VALUES
+('Deposit'),
+('Withdrawal'),
+('Transfer'),
+('Payment');
+
