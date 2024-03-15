@@ -26,7 +26,7 @@ class CustomerModelTests(TestCase):
         print ("Testing Customer Creation")
         # Create a test customer
         pwd_hash = bcrypt.hashpw('test1234'.encode(), bcrypt.gensalt())
-        cust = customer(first_name='John', last_name='Doe', customer_id='123e4567-e89b-12d3-a456-426614174000', password_hash=pwd_hash)
+        cust = customer(first_name='John', last_name='Doe', password_hash=pwd_hash)
         cust.save()
 
         # Retrieve the customer and verify details
@@ -40,8 +40,8 @@ class AccountModelTests(TestCase):
 
     def setUp(self):
         # This method will run before each test function in this class
-        AccountType.objects.create(name='Savings')
-        customer.objects.create(first_name='Jane', last_name='Doe', customer_id='123e4567-e89b-12d3-a456-426614174001')
+        AccountType.objects.get(name='Savings')
+        customer.objects.create(first_name='Jane', last_name='Doe')
 
     def test_create_account(self):
         # Create a test account

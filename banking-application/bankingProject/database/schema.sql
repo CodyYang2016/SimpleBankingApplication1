@@ -60,6 +60,21 @@ CREATE TABLE retail_banking.Account (
     FOREIGN KEY (updated_by) REFERENCES retail_banking.customer(customer_id)
 );
 
+
+
+-- Create TransactionType Table under the new schema
+CREATE TABLE retail_banking.TransactionType (
+    transaction_type_id SERIAL PRIMARY KEY,
+    description VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- Populate TransactionType Table with initial data
+INSERT INTO retail_banking.TransactionType (description) VALUES
+('Deposit'),
+('Withdrawal'),
+('Transfer'),
+('Payment');
+
 -- Create Transaction Table under the new schema
 CREATE TABLE retail_banking.Transaction (
     transaction_id SERIAL PRIMARY KEY,
@@ -78,16 +93,4 @@ CREATE TABLE retail_banking.Transaction (
 );
 
 
--- Create TransactionType Table under the new schema
-CREATE TABLE retail_banking.TransactionType (
-    transaction_type_id SERIAL PRIMARY KEY,
-    description VARCHAR(20) UNIQUE NOT NULL
-);
-
--- Populate TransactionType Table with initial data
-INSERT INTO retail_banking.TransactionType (description) VALUES
-('Deposit'),
-('Withdrawal'),
-('Transfer'),
-('Payment');
 
