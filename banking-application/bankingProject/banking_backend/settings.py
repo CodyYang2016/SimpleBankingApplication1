@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'banking_backend.apps.BankingBackendConfig',
     'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'banking_backend.urls'
@@ -150,3 +152,11 @@ LOGGING = {
         },
     },
 }
+
+""" CORS_ALLOWED_ORIGIN = [
+    'http://localhost:3000',  # Example: Allow requests from React application running on localhost:3000
+    'https://your-production-domain.com',  # Example: Allow requests from your production React application
+]
+ """
+CORS_ORIGIN_ALLOW_ALL = True
+

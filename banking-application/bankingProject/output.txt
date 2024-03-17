@@ -1,0 +1,1 @@
+<QueryDict: {'csrfmiddlewaretoken': ['rxiypIjCTFKjGmpBoq04pdyf8cwEet372NZ1roOJuGwEUtJfFc5FAYpt1AfpMArk'], 'first_name': ['Cody'], 'last_name': ['Yang'], 'email': ['james.q.zhang@gmail.com'], 'raw_password': ['Abcd1234']}>

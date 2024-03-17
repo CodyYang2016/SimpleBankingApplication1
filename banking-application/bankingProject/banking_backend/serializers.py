@@ -14,6 +14,7 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         raw_password = validated_data.pop('raw_password', None)
+        # print (f'Creating customer with parameters: {validated_data}')
         customer = customer.objects.create(**validated_data)
         if raw_password is not None:
             #customer.set_password(raw_password)

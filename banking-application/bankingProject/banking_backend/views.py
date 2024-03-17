@@ -11,30 +11,40 @@ class CustomerViewSet(viewsets.ModelViewSet):
     serializer_class = CustomerSerializer
     queryset = customer.objects.all()
     def create(self, request, *args, **kwargs):
-        mutable_data = request.data.copy()  # Create a mutable copy of the request data
-        serializer = self.get_serializer(data=mutable_data)
-        if serializer.is_valid():
-            # Extract data from serializer
-            first_name = serializer.validated_data.get('first_name')
-            last_name = serializer.validated_data.get('last_name')
-            email = serializer.validated_data.get('email')
-            raw_password = serializer.validated_data.get('password')
+        try:
+            mutable_data = request.data.copy()  # Create a mutable copy of the request data
 
-            # Create and save the customer instance
-            new_customer = customer.objects.create(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-            )
-            new_customer.set_password(raw_password)
-            new_customer.save()
+            serializer = self.get_serializer(data=mutable_data)
+            with open("output.txt", "w") as file:
+                file.write(str(mutable_data))
 
-            # Return success response
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            # Return error response if serializer is not valid
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            #raise Exception(str(mutable_data))
 
+            if serializer.is_valid():
+                # Extract data from serializer
+                first_name = serializer.validated_data.get('first_name')
+                last_name = serializer.validated_data.get('last_name')
+                email = serializer.validated_data.get('email')
+                #raise Exception("blah")
+                raw_password = serializer.validated_data.get('password')
+
+                # Create and save the customer instance
+                new_customer = customer.objects.create(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                )
+                new_customer.set_password(raw_password)
+                new_customer.save()
+
+                # Return success response
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                # Return error response if serializer is not valid
+                #raise Exception("yep")
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 class AccountViewSet(viewsets.ModelViewSet):
     """
