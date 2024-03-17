@@ -5,24 +5,40 @@ import uuid
 import bcrypt
 from .func import generate_account_number
 from django.utils import timezone
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class customer(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     customer_id = models.AutoField(primary_key=True)
-    password_hash = models.BinaryField()
+    password = models.BinaryField()
+    email = models.EmailField()
 
+    def set_password(self, raw_password):
+        """
+        Set the password for the customer by hashing it and converting to bytes.
+        """
+        hashed_password = make_password(raw_password)
+        # self.password = bytes(hashed_password, encoding='utf-8')
+        self.password = hashed_password.encode('utf-8')  # Encode the hashed password to bytes
 
-    def update_customer_information(self, newFirstName, newLastName, newPin):
-        self.first_name = newFirstName
-        self.last_name = newLastName
-        self.password_hash = bcrypt.hashpw(newPin.encode(), bcrypt.gensalt())
+    def check_password(self, raw_password):
+        """
+        Check if the given raw password matches the hashed password.
+        """
+        return check_password(raw_password, self.password.decode('utf-8'))
+
+    def update_customer_information(self, new_first_name, new_last_name, new_password):
+        self.first_name = new_first_name
+        self.last_name = new_last_name
+        self.set_password(new_password) 
 
     def validate_pin(self, pin):
-        return bcrypt.checkpw(pin.encode(), self.password_hash)
+        return bcrypt.checkpw(pin.encode(), self.password)
     
     class Meta:
-        db_table = 'retail_banking.customer'
+        db_table = 'customer'
         managed = False
 
 class AccountType(models.Model):
@@ -30,16 +46,15 @@ class AccountType(models.Model):
     name = models.CharField(max_length=20, unique=True)
 
     class Meta:
-        db_table = 'retail_banking.AccountType'
+        db_table = 'AccountType'
         managed = False
 
 
 class Account(models.Model):
-    name = models.CharField(max_length=100)
-    customer_id = models.ForeignKey(customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(customer, on_delete=models.CASCADE)
     account_id = models.AutoField(primary_key=True)
     account_description = models.CharField(max_length = 1000)
-    account_type_id = models.ForeignKey(AccountType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
+    account_type = models.ForeignKey(AccountType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
     account_number = generate_account_number("2326", 10)
 
     def get_balance(self):
@@ -61,7 +76,7 @@ class Account(models.Model):
         Transaction.objects.create(amount=amount, memo=memo, account = self)
 
     class Meta:
-        db_table = 'retail_banking.account'
+        db_table = 'account'
         managed = False
 
 
@@ -70,7 +85,7 @@ class TransactionType(models.Model):
     name = models.CharField(max_length=20, unique=True)
 
     class Meta:
-        db_table = 'retail_banking.TransactionType'
+        db_table = 'TransactionType'
         managed = False
 
 class Transaction(models.Model):
@@ -78,7 +93,7 @@ class Transaction(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     in_account = models.ForeignKey(Account, on_delete=models.CASCADE)
     memo = models.CharField(max_length=100)
-    account_type_id = models.ForeignKey(TransactionType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
+    account_type = models.ForeignKey(TransactionType, on_delete=models.CASCADE)  # Assuming you've created AccountType model
 
 
     def get_summary_line(self):
@@ -88,7 +103,7 @@ class Transaction(models.Model):
             return f"{self.timestamp}: $({-self.amount:.2f}): {self.memo}"
     
     class Meta:
-        db_table = 'retail_banking.transaction'
+        db_table = 'transaction'
         managed = False
 
 class Session(models.Model):
@@ -102,7 +117,7 @@ class Session(models.Model):
     last_update = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        db_table = 'retail_banking.Session'
+        db_table = 'Session'
         managed = False
 
 

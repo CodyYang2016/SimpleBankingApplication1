@@ -16,14 +16,17 @@ Including another URLconf
 
 
 """
-from django.contrib import admin
-from django.urls import path
-from . import views  # Import the views module
+
+
+from django.urls import include, path
+from rest_framework import routers
+from . import views
+
+router = routers.DefaultRouter()
+router.register(r'customers', views.CustomerViewSet)
+router.register(r'accounts', views.AccountViewSet)
+router.register(r'transactions', views.TransactionViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('register/', views.register_user, name='register'),
-    path('account/<uuid:account_uuid>/', views.account_detail, name='account_detail'),
-    path('transaction/<int:transaction_id>/', views.transaction_detail, name='transaction_detail'),
+    path('', include(router.urls)),
 ]
-

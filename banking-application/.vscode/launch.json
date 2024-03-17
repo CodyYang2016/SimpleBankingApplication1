@@ -5,16 +5,31 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Django",
+            "name": "Python: Django",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}\\bankingProject\\manage.py",
             "args": [
-                "test",
-                "banking_backend.tests"  // This should match your app name and test module
+                "runserver",
+                "8000"
             ],
             "django": true,
-            "autoStartBrowser": false
-        }
+            "autoStartBrowser": false,
+            "justMyCode": false
+
+        },
+        
+        //{
+          //  "name": "Python Debugger: Django",
+            //"type": "debugpy",
+            //"request": "launch",
+            //"program": "${workspaceFolder}\\bankingProject\\manage.py",
+            //"args": [
+              //  "test",
+                //"banking_backend.tests" // This should match your app name and test module
+            //],
+            //"django": true,
+            //"autoStartBrowser": false
+        //}
     ]
 }
