@@ -1,11 +1,11 @@
+-- psql -U postgres -d banking_app -a -f schema.sql
 -- Create a new schema
 CREATE SCHEMA retail_banking;
 
 -- Create customer Table under the new schema
 CREATE TABLE retail_banking.customer (
     customer_id SERIAL PRIMARY KEY,
-    customername VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(128) NOT NULL,
+    password BYTEA NOT NULL,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     email VARCHAR(100),

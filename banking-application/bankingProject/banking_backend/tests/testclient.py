@@ -26,13 +26,13 @@ class CustomerModelTests(TestCase):
         print ("Testing Customer Creation")
         # Create a test customer
         pwd_hash = bcrypt.hashpw('test1234'.encode(), bcrypt.gensalt())
-        cust = customer(first_name='John', last_name='Doe', password_hash=pwd_hash)
+        cust = customer(first_name='John', last_name='Doe', password=pwd_hash)
         cust.save()
 
         # Retrieve the customer and verify details
         retrieved = customer.objects.get(first_name='John', last_name='Doe')
         self.assertEqual(retrieved.first_name, 'John')
-        self.assertTrue(bcrypt.checkpw('test1234'.encode(), retrieved.password_hash))
+        self.assertTrue(bcrypt.checkpw('test1234'.encode(), retrieved.password))
         print ("Customer created and retrieved succesfully")
 
 

@@ -1,3 +1,4 @@
+-- psql -U postgres -d banking_app -a -f undoSchema.sql
 -- Drop all tables in the schema
 DROP TABLE IF EXISTS retail_banking.Transaction;
 DROP TABLE IF EXISTS retail_banking.Account;
@@ -7,4 +8,5 @@ DROP TABLE IF EXISTS retail_banking.AccountType;
 DROP TABLE IF EXISTS retail_banking.TransactionType;
 
 -- Drop the schema
-DROP SCHEMA IF EXISTS retail_banking CASCADE;
+-- DROP SCHEMA IF EXISTS retail_banking CASCADE;
+
