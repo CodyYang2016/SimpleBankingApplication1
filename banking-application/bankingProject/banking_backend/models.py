@@ -16,17 +16,14 @@ class customer(models.Model):
     email = models.EmailField()
 
     def set_password(self, raw_password):
-        """
-        Set the password for the customer by hashing it and converting to bytes.
-        """
+
         hashed_password = make_password(raw_password)
         # self.password = bytes(hashed_password, encoding='utf-8')
         self.password = hashed_password.encode('utf-8')  # Encode the hashed password to bytes
 
     def check_password(self, raw_password):
-        """
-        Check if the given raw password matches the hashed password.
-        """
+       # Check if the given raw password matches the hashed password.
+
         return check_password(raw_password, self.password.decode('utf-8'))
 
     def update_customer_information(self, new_first_name, new_last_name, new_password):
