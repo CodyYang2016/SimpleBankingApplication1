@@ -1,2 +1,0 @@
-
-<QueryDict: {'csrfmiddlewaretoken': ['8emubGbD8dFzY9b0dsaDCs8QneCe94VoJu3XdmGKJerUcgvEuefeNdZ4gClZHbjB'], 'first_name': ['a'], 'last_name': ['b'], 'email': ['c@tmp.com'], 'raw_password': ['Abcd1234']}>

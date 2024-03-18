@@ -1,4 +1,6 @@
 #!/bin/bash
+#chmod u+x dbsetup.sh
+
 #bash dbsetup.sh
 # Define variables
 DB_NAME="banking_app"
