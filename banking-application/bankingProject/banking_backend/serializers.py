@@ -32,9 +32,12 @@ class CustomerSerializer(serializers.ModelSerializer):
 
     def to_internal_value(self, data):
         # Ensure that password is decoded from base64-encoded string to bytes
-        if 'raw_password' in data:
-            data['raw_password'] = base64.b64decode(data['raw_password'])
+#        if 'raw_password' in data:
+#            data['raw_password'] = base64.b64decode(data['raw_password'])
         return super().to_internal_value(data)
+    
+
+
     
 class AccountTypeSerializer(serializers.ModelSerializer):
     class Meta:
